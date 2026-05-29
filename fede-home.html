@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federico C. — Estratega de YouTube</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060608;
+  --bg2:#0d0d12;
+  --surface:#12121a;
+  --border:#1f1f2e;
+  --accent:#2563eb;
+  --accent2:#3b82f6;
+  --text:#f4f4f8;
+  --muted:#7a7a8c;
+  --subtle:#2e2e40;
+  --font-d:'Barlow Condensed',sans-serif;
+  --font-b:'Barlow',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+*,a,button{cursor:none!important;}
+#cursor{position:fixed;width:8px;height:8px;background:var(--accent2);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .12s;}
+#cursor-ring{position:fixed;width:28px;height:28px;border:1.5px solid var(--accent2);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .3s,opacity .2s;opacity:.35;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(6,6,8,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:var(--font-d);font-size:1.3rem;font-weight:800;letter-spacing:.04em;color:var(--text);text-decoration:none;text-transform:uppercase;}
+.nav-logo span{color:var(--accent2);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--accent);color:#fff;padding:.65rem 1.6rem;border-radius:4px;text-decoration:none;font-family:var(--font-d);font-size:.95rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:background .2s,transform .2s;}
+.nav-cta:hover{background:var(--accent2);transform:translateY(-1px);}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.4rem;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:9rem 4rem 6rem;position:relative;overflow:hidden;}
+.hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;}
+.hero-glow{position:absolute;top:20%;right:10%;width:500px;height:500px;background:var(--accent);opacity:.06;border-radius:50%;filter:blur(120px);}
+.hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;width:100%;}
+.hero-eyebrow{font-family:var(--font-d);font-size:.8rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--accent2);}
+h1.hero-title{font-family:var(--font-d);font-size:clamp(5rem,10vw,10rem);font-weight:900;line-height:.92;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:2rem;}
+h1.hero-title .outline{-webkit-text-stroke:2px var(--accent2);color:transparent;}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:3rem;font-weight:300;}
+.btn-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#fff;padding:1rem 2.2rem;border-radius:4px;text-decoration:none;font-family:var(--font-d);font-weight:700;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 0 40px #2563eb33;}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 0 60px #2563eb55;}
+.btn-ghost{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--border);color:var(--muted);padding:1rem 2.2rem;border-radius:4px;text-decoration:none;font-family:var(--font-d);font-weight:600;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;transition:border-color .2s,color .2s;margin-left:1rem;}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--text);}
+
+/* CARDS */
+#services{padding:7rem 4rem;}
+.section-eyebrow{font-family:var(--font-d);font-size:.78rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;}
+.section-eyebrow::before{content:'';width:20px;height:2px;background:var(--accent2);}
+.section-heading{font-family:var(--font-d);font-size:clamp(3rem,5vw,5rem);font-weight:900;line-height:.95;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:.75rem;}
+.section-heading .outline{-webkit-text-stroke:1.5px var(--accent2);color:transparent;}
+.section-sub{color:var(--muted);font-size:.95rem;max-width:480px;margin-bottom:4rem;line-height:1.6;}
+.cards-wrap{max-width:1100px;margin:0 auto;}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.card{background:var(--surface);padding:2.5rem;position:relative;overflow:hidden;transition:background .25s;}
+.card+.card{border-left:1px solid var(--border);}
+.card:hover{background:var(--bg2);}
+.card-top-line{position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.card:hover .card-top-line{transform:scaleX(1);}
+.card-num{font-family:var(--font-d);font-size:5rem;font-weight:900;line-height:1;color:var(--subtle);margin-bottom:1.2rem;letter-spacing:-.02em;}
+.card-icon{font-size:2rem;margin-bottom:1rem;}
+.card-title{font-family:var(--font-d);font-size:1.4rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;line-height:1.15;margin-bottom:.75rem;}
+.card-desc{font-size:.85rem;color:var(--muted);line-height:1.65;margin-bottom:2rem;}
+.card-link{font-family:var(--font-d);font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:gap .2s;}
+.card-link:hover{gap:.8rem;}
+
+/* DIVIDER */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0 4rem;}
+
+/* CTA */
+#cta{padding:7rem 4rem;text-align:center;position:relative;overflow:hidden;}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:var(--accent);opacity:.05;border-radius:50%;filter:blur(100px);}
+.cta-inner{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+.cta-heading{font-family:var(--font-d);font-size:clamp(3.5rem,6vw,6rem);font-weight:900;line-height:.92;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:1.2rem;}
+.cta-heading .outline{-webkit-text-stroke:1.5px var(--accent2);color:transparent;}
+.cta-sub{color:var(--muted);font-size:1rem;line-height:1.65;margin-bottom:2.5rem;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:.78rem;font-family:var(--font-d);letter-spacing:.06em;text-transform:uppercase;}
+.footer-logo{font-family:var(--font-d);font-weight:800;font-size:.95rem;color:var(--text);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;}
+.footer-logo span{color:var(--accent2);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* MOBILE */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+.mobile-menu.open{display:flex;}
+.mobile-link{font-family:var(--font-d);font-size:2.5rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;color:var(--text);text-decoration:none;}
+.mobile-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:var(--muted);font-size:1.5rem;}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nav-links,.nav-cta{display:none;}
+  .hamburger{display:block;}
+  #hero{padding:7rem 1.5rem 5rem;}
+  h1.hero-title{font-size:clamp(4rem,15vw,7rem);}
+  #services{padding:5rem 1.5rem;}
+  .cards-grid{grid-template-columns:1fr;}
+  .card+.card{border-left:none;border-top:1px solid var(--border);}
+  #cta{padding:5rem 1.5rem;}
+  footer{padding:1.5rem;flex-direction:column;gap:.75rem;text-align:center;}
+  .section-divider{margin:0 1.5rem;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#services" class="mobile-link" onclick="document.getElementById('mobileMenu').classList.remove('open')">LO QUE HAGO</a>
+  <a href="https://wa.me/5491140836615" class="mobile-link" style="color:var(--accent2)" target="_blank">WHATSAPP</a>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo">Federico<span>C.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">LO QUE HAGO</a></li>
+    <li><a href="fede-youtube.html">ASESORÍAS YOUTUBE</a></li>
+    <li><a href="fede-ebook.html">EBOOK</a></li>
+  </ul>
+  <a href="https://wa.me/5491140836615" class="nav-cta" target="_blank">ESCRIBIME →</a>
+  <button class="hamburger" id="hamburger">☰</button>
+</nav>
+
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Estratega de YouTube · Creador digital</div>
+    <h1 class="hero-title">
+      HOLA,<br>SOY <span class="outline">FEDERICO</span><br>C.
+    </h1>
+    <p class="hero-sub">
+      Ayudo a personas a crecer en YouTube, vivir del ecosistema digital y tener presencia profesional en internet.
+    </p>
+    <div>
+      <a href="https://wa.me/5491140836615" class="btn-primary" target="_blank">CONTACTAME POR WHATSAPP →</a>
+      <a href="#services" class="btn-ghost">VER LO QUE HAGO ↓</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="services">
+  <div class="cards-wrap">
+    <div class="reveal">
+      <div class="section-eyebrow">LO QUE HAGO</div>
+      <h2 class="section-heading">TRES FORMAS DE<br><span class="outline">AYUDARTE</span></h2>
+      <p class="section-sub">Elegí el camino que mejor se adapta a tu momento.</p>
+    </div>
+    <div class="cards-grid reveal" style="transition-delay:.1s">
+      <div class="card">
+        <div class="card-top-line"></div>
+        <div class="card-num">01</div>
+        <div class="card-icon">🎬</div>
+        <div class="card-title">ESTRATEGIA DE YOUTUBE</div>
+        <p class="card-desc">12 años en el ecosistema. Te ayudo a monetizar, crecer y proteger tu canal.</p>
+        <a href="fede-youtube.html" class="card-link">VER ASESORÍAS →</a>
+      </div>
+      <div class="card">
+        <div class="card-top-line"></div>
+        <div class="card-num">02</div>
+        <div class="card-icon">✏️</div>
+        <div class="card-title">VIVIR DE EDICIÓN Y DISEÑO</div>
+        <p class="card-desc">Te enseño a conseguir clientes como editor o diseñador de miniaturas y crecer como freelancer.</p>
+        <a href="fede-ebook.html" class="card-link">VER EBOOK →</a>
+      </div>
+      <div class="card">
+        <div class="card-top-line"></div>
+        <div class="card-num">03</div>
+        <div class="card-icon">🌐</div>
+        <div class="card-title">TU PÁGINA WEB EN 24HS</div>
+        <p class="card-desc">Páginas web profesionales listas en menos de 24 horas. Desde $40 USD.</p>
+        <a href="https://webpronto.dev" class="card-link" target="_blank">VER MÁS →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-inner reveal">
+    <div class="section-eyebrow" style="justify-content:center">CONTACTO</div>
+    <h2 class="cta-heading">¿TENÉS UN<br><span class="outline">PROYECTO?</span></h2>
+    <p class="cta-sub">Escribime por WhatsApp. Te respondo y te digo honestamente si puedo ayudarte.</p>
+    <a href="https://wa.me/5491140836615" class="btn-primary" target="_blank" style="margin:0 auto">CONTACTAME POR WHATSAPP →</a>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo">Federico<span>C.</span></a>
+  <span>© 2025 · TODOS LOS DERECHOS RESERVADOS</span>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.opacity='.7';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='.35';});
+});
+document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',()=>document.getElementById('mobileMenu').classList.remove('open'));
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
